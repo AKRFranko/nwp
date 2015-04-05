@@ -1,0 +1,26 @@
+#!/bin/env node
+
+var cli = require('cli');
+var nwp = require('../index.js');
+
+
+var yaml, json;
+
+var options = cli.parse({
+    yaml:  ['y', 'The wp-cli.yml to use.', 'path' ],
+    json: [ 'j', 'The JSON file to parse.', 'path' ]
+});
+
+if( !options.json || !options.yaml ){
+	cli.getUsage()
+	process.exit( 0 )
+}
+
+json = nwp.readJSONFile( options.json, options );
+yaml = nwp.readYAMLFile( options.yaml, options );
+
+nwp( json, yaml ).run( function( err, out ){
+	console.log("\n");
+})
+
+
